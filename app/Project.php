@@ -12,8 +12,6 @@ class Project extends Model
     {
     	return "/projects/{$this->id}";
     }
-
-
     public function owner()
     {
     	return $this->belongsTo(User::class);
@@ -25,5 +23,9 @@ class Project extends Model
     public function addTask($body)
     {
     	return $this->tasks()->create(compact('body'));
+    }
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
     }
 }
