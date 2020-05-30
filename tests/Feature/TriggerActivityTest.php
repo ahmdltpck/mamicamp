@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Activity;
 use App\Task;
+use App\RecordsActivity;
 
 
 class TriggerActivityTest extends TestCase
@@ -23,7 +24,7 @@ class TriggerActivityTest extends TestCase
 
         tap($project->activity->last(), function ($activity) { 
 
-            $this->assertEquals('created', $activity->description);
+            $this->assertEquals('created_project', $activity->description);
             $this->assertNull($activity->changes);
         });
     }
@@ -40,7 +41,7 @@ class TriggerActivityTest extends TestCase
 
         tap($project->activity->last(), function ($activity) use ($originalTitle) { 
 
-            $this->assertEquals('updated', $activity->description);
+            $this->assertEquals('updated_project', $activity->description);
 
             $expected = [
                 'before' => ['title' => $originalTitle],
