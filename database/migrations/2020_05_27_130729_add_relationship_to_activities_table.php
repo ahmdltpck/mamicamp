@@ -17,6 +17,9 @@ class AddRelationshipToActivitiesTable extends Migration
             
             $table->BigInteger('project_id')->change()->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
+            $table->BigInteger('user_id')->change()->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
 
         });
     }
@@ -36,6 +39,16 @@ class AddRelationshipToActivitiesTable extends Migration
         });
         Schema::table('projects', function (Blueprint $table) {
             $table->integer('project_id')->change();
+        });
+
+        Schema::table('activities', function (Blueprint $table) {
+            $table->dropForeign('users_user_id_foreign');
+        });
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropIndex('users_user_id_foreign');
+        });
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('user_id')->change();
         });
 
     }

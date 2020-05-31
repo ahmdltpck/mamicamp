@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Project;
 use App\Http\Requests\UpdateProjectRequest;
+use App\RecordsActivity;
 
 class ProjectsController extends Controller
 {
@@ -47,6 +48,15 @@ class ProjectsController extends Controller
     public function update(UpdateProjectRequest $form)
     {
         return redirect($form->save()->path());
+    }
+
+    public function destroy(Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $project->delete();
+
+        return redirect('/projects');
     }
 
 
