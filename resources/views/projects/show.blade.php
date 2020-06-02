@@ -7,8 +7,22 @@
 	                <a href="/projects" class="text-grey text-sm font-normal no-underline hover:underline">My Projects</a>
 	                / {{ $project->title }}
 	            </p>
+                <div class="flex items-center">
+                        @foreach($project->members as $member)
+                       <img 
+                           src="{{ gravatar_url($member->email) }}" 
+                           alt="{{ $member->name }}' avatar" 
+                           class="rounded-full w-8 mr-2">
+                       @endforeach
 
-                <a href="{{ $project->path().'/edit' }}" class="button">Edit Project</a>
+                       <img 
+                            src="{{ gravatar_url($project->owner->email) }}" 
+                            alt="{{ $project->owner->name }}' avatar" 
+                            class="rounded-full w-8 mr-2">
+                            
+                       <a href="{{ $project->path().'/edit' }}" class="button ml-4">Edit Project</a>
+                </div>
+             
 	        </div>
 	    </header>
 	    <main>
@@ -56,35 +70,17 @@
 
                     <button type="submit" class="button">Save</button>
                     </form>
-
-                    @if ($errors->any())
-                        <div class="field mt-6 ">
-                                @foreach ($errors->all() as $error)
-                                    <li class="text-sm text-red">{{$error}}</li>
-                                @endforeach
-                        </div>
-                    @endif      
+                @include('errors') 
                 </div>
             </div>
 
             <div class="lg:w-1/4 px-3 lg:py-8">
-        				 <div class="card" style="height: 200px">
-        				    <h3 class="font-normal text-xl py-4 -ml-5 mb-3 border-l-4 border-blue-light pl-4">
-        				        <a href="{{ $project->path() }}" class="text-black no-underline">{{ $project->title }}</a>
-        				    </h3>
-
-        				    <div class="text-grey mb-4">{{ Illuminate\Support\Str::limit($project->description) }}</div>
-
-        				    <footer>
-        				        <form method="POST" action="{{ $project->path() }}" class="text-right">
-        				            @method('DELETE')
-        				            @csrf
-        				            <button type="submit" class="text-xs">Delete</button>
-        				        </form>
-        				    </footer>
-        				</div>
-
+        	
+                @include ('projects.card')
                 @include ('projects.activity.card')
+                @can ('manage', $project)
+                     @include ('projects.invite')
+                @endcan
             </div>
 
         </div>
