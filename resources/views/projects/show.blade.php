@@ -8,6 +8,7 @@
                     / {{ $project->title }}
                 </p>
                 <div class="flex items-center">
+                    
                         @foreach($project->members as $member)
                        <img 
                            src="{{ gravatar_url($member->email) }}" 
