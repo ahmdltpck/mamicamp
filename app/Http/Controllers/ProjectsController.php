@@ -34,10 +34,15 @@ class ProjectsController extends Controller
     {
         return view('projects.create');
     }
-
+    /** @return mixed */
     public function store()
     {
         $project = auth()->user()->projects()->create($this->validateRequest());
+
+        if (request()->wantsJson()) {
+            return ['message' => $project->path()];
+        }
+
 		return redirect($project->path());
     }
 
